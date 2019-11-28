@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mrm.ysu.dao.AppointMapper">
+  <resultMap id="BaseResultMap" type="com.mrm.ysu.pojo.Appoint">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="room_id" jdbcType="INTEGER" property="roomId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="appoint_time" jdbcType="DATE" property="appointTime" />
+    <result column="appoint_start" jdbcType="INTEGER" property="appointStart" />
+    <result column="appoint_end" jdbcType="INTEGER" property="appointEnd" />
+    <result column="reason" jdbcType="DATE" property="reason" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="real_phone" jdbcType="VARCHAR" property="realPhone" />
+    <result column="is_del" jdbcType="INTEGER" property="isDel" />
+    <result column="deal_time" jdbcType="TIMESTAMP" property="dealTime" />
+  </resultMap>
+  <resultMap id="MonthCountStatic" type="com.mrm.ysu.pojo.MonthCountStatic">
+    <id column="month_date" jdbcType="VARCHAR" property="monthDate" />
+    <result column="month_value" jdbcType="INTEGER" property="monthValue" />
+    <result column="appoint_count" jdbcType="INTEGER" property="appointCount" />
+  </resultMap>
+  <resultMap id="roomCountStatic" type="com.mrm.ysu.pojo.RoomCountStatic">
+    <id column="name" jdbcType="VARCHAR" property="name" />
+    <result column="value" jdbcType="INTEGER" property="value" />
+  </resultMap>
+  <resultMap id="AsResultMap" type="com.mrm.ysu.pojo.Appoint">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="room_id" jdbcType="INTEGER" property="roomId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="appoint_time" jdbcType="DATE" property="appointTime" />
+    <result column="appoint_start" jdbcType="INTEGER" property="appointStart" />
+    <result column="appoint_end" jdbcType="INTEGER" property="appointEnd" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="real_phone" jdbcType="VARCHAR" property="realPhone" />
+    <result column="is_del" jdbcType="INTEGER" property="isDel" />
+    <result column="deal_time" jdbcType="TIMESTAMP" property="dealTime" />
+    <association property="meetingRoom" javaType="com.mrm.ysu.pojo.MeetingRoom">
+	    <id column="mid" jdbcType="INTEGER" property="id" />
+	    <result column="scale" jdbcType="INTEGER" property="scale" />
+	    <result column="name" jdbcType="VARCHAR" property="name" />
+	    <result column="department_id" jdbcType="INTEGER" property="departmentId" />
+	    <result column="capacity" jdbcType="INTEGER" property="capacity" />
+	    <result column="multimedia" jdbcType="INTEGER" property="multimedia" />
+	    <result column="device_state" jdbcType="INTEGER" property="deviceState" />
+	    <result column="is_check" jdbcType="INTEGER" property="isCheck" />
+	    <result column="ahead_time" jdbcType="INTEGER" property="aheadTime" /> 
+    </association>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, room_id, user_id, appoint_time, appoint_start, appoint_end, reason, state, submit_time, 
+    real_name, real_phone, is_del, deal_time
+  </sql>
+   <sql id="appoint_meeting_Column_List">
+    appoint.id, room_id, user_id, appoint_time, appoint_start, appoint_end, reason, state, submit_time, 
+    real_name, real_phone, appoint.is_del, deal_time,meeting_room.id mid,meeting_room.name,scale,department_id, 
+    capacity, multimedia, device_state, is_check, ahead_time
+  </sql>
+  <select id="selectByExample" parameterType="com.mrm.ysu.pojo.AppointExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from appoint
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from appoint
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from appoint
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mrm.ysu.pojo.AppointExample">
+    delete from appoint
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mrm.ysu.pojo.Appoint">
+    insert into appoint (id, room_id, user_id, 
+      appoint_time, appoint_start, appoint_end, 
+      reason, state, submit_time, 
+      real_name, real_phone, is_del, 
+      deal_time)
+    values (#{id,jdbcType=INTEGER}, #{roomId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{appointTime,jdbcType=DATE}, #{appointStart,jdbcType=INTEGER}, #{appointEnd,jdbcType=INTEGER}, 
+      #{reason,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{submitTime,jdbcType=TIMESTAMP}, 
+      #{realName,jdbcType=VARCHAR}, #{realPhone,jdbcType=VARCHAR}, #{isDel,jdbcType=INTEGER}, 
+      #{dealTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mrm.ysu.pojo.Appoint">
+    insert into appoint
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="roomId != null">
+        room_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="appointTime != null">
+        appoint_time,
+      </if>
+      <if test="appointStart != null">
+        appoint_start,
+      </if>
+      <if test="appointEnd != null">
+        appoint_end,
+      </if>
+      <if test="reason != null">
+        reason,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="submitTime != null">
+        submit_time,
+      </if>
+      <if test="realName != null">
+        real_name,
+      </if>
+      <if test="realPhone != null">
+        real_phone,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="dealTime != null">
+        deal_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="roomId != null">
+        #{roomId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="appointTime != null">
+        #{appointTime,jdbcType=DATE},
+      </if>
+      <if test="appointStart != null">
+        #{appointStart,jdbcType=INTEGER},
+      </if>
+      <if test="appointEnd != null">
+        #{appointEnd,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="submitTime != null">
+        #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="realPhone != null">
+        #{realPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="dealTime != null">
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mrm.ysu.pojo.AppointExample" resultType="java.lang.Long">
+    select count(*) from appoint
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update appoint
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.roomId != null">
+        room_id = #{record.roomId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.appointTime != null">
+        appoint_time = #{record.appointTime,jdbcType=DATE},
+      </if>
+      <if test="record.appointStart != null">
+        appoint_start = #{record.appointStart,jdbcType=INTEGER},
+      </if>
+      <if test="record.appointEnd != null">
+        appoint_end = #{record.appointEnd,jdbcType=INTEGER},
+      </if>
+      <if test="record.reason != null">
+        reason = #{record.reason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.submitTime != null">
+        submit_time = #{record.submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.realName != null">
+        real_name = #{record.realName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realPhone != null">
+        real_phone = #{record.realPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDel != null">
+        is_del = #{record.isDel,jdbcType=INTEGER},
+      </if>
+      <if test="record.dealTime != null">
+        deal_time = #{record.dealTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update appoint
+    set id = #{record.id,jdbcType=INTEGER},
+      room_id = #{record.roomId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      appoint_time = #{record.appointTime,jdbcType=DATE},
+      appoint_start = #{record.appointStart,jdbcType=INTEGER},
+      appoint_end = #{record.appointEnd,jdbcType=INTEGER},
+      reason = #{record.reason,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      submit_time = #{record.submitTime,jdbcType=TIMESTAMP},
+      real_name = #{record.realName,jdbcType=VARCHAR},
+      real_phone = #{record.realPhone,jdbcType=VARCHAR},
+      is_del = #{record.isDel,jdbcType=INTEGER},
+      deal_time = #{record.dealTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mrm.ysu.pojo.Appoint">
+    update appoint
+    <set>
+      <if test="roomId != null">
+        room_id = #{roomId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="appointTime != null">
+        appoint_time = #{appointTime,jdbcType=DATE},
+      </if>
+      <if test="appointStart != null">
+        appoint_start = #{appointStart,jdbcType=INTEGER},
+      </if>
+      <if test="appointEnd != null">
+        appoint_end = #{appointEnd,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="submitTime != null">
+        submit_time = #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realName != null">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="realPhone != null">
+        real_phone = #{realPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="dealTime != null">
+        deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mrm.ysu.pojo.Appoint">
+    update appoint
+    set room_id = #{roomId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      appoint_time = #{appointTime,jdbcType=DATE},
+      appoint_start = #{appointStart,jdbcType=INTEGER},
+      appoint_end = #{appointEnd,jdbcType=INTEGER},
+      reason = #{reason,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      submit_time = #{submitTime,jdbcType=TIMESTAMP},
+      real_name = #{realName,jdbcType=VARCHAR},
+      real_phone = #{realPhone,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=INTEGER},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="contradiction" parameterType="com.mrm.ysu.pojo.QueryContra" resultMap="BaseResultMap">
+     SELECT  
+     <include refid="Base_Column_List" />
+      FROM appoint
+      <where>
+            !(appoint_start &gt;= #{end} or appoint_end &lt;=#{start} ) 
+            and appoint_time = #{appointTime}
+            and state=0 and room_id =#{roomId}
+           
+      </where>
+   
+</select>
+  <select id="queryTimeConflict" parameterType="com.mrm.ysu.pojo.QueryRoom" resultType="map">
+    SELECT 
+    distinct room_id,real_name
+    FROM appoint 
+    where room_id in 
+    <foreach collection="roomList" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+     
+    <if test="appointTime!=null and appointTime!='' and start != '' and end!='' ">
+      and state=1 and  appoint_time=#{appointTime} and !(appoint_start &gt;= #{end} or appoint_end &lt;=#{start}) 
+    </if>  
+  </select>
+  <select id="query" parameterType="com.mrm.ysu.pojo.Appoint" resultMap="AsResultMap">
+    select 
+     <include refid="appoint_meeting_Column_List" />
+     FROM appoint,meeting_room
+        where  appoint.room_id = meeting_room.id and  user_id = #{userId}
+    <if test="roomName !=null and roomName !='' ">
+        and meeting_room.name like #{roomName}
+    </if>
+     and appoint.is_del = 0
+    <if test="state!=null">
+      and state = #{state}
+    </if>
+    order by appoint_time DESC, appoint_end DESC
+  </select>
+  <select id="selectRemind" parameterType="com.mrm.ysu.pojo.Appoint" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from appoint
+    where is_del = 0 and 
+    (datediff(appoint_time,#{start}) &gt; 0 or 
+    (datediff(appoint_time,#{start}) = 0 and appoint_start &gt;= #{appointStart} ))
+    <if test="userId != null">
+      and user_id = #{userId}
+    </if>
+    <if test="state!=null">
+      and state = #{state}
+    </if>
+    order by appoint_time , appoint_start  
+  </select>
+  <select id="monthCountStatic" resultMap="MonthCountStatic">
+    select any_value(date_format(appoint_time,'%c') )as month_value,any_value(date_format(appoint_time, '%Y-%m') )as month_date,COUNT(id) as appoint_count
+	from appoint
+	where state = 1 AND appoint_time &gt;= date_add(last_day(date_sub(curdate(), interval 1 year)), interval 1 day) AND appoint_time &lt;= last_day(curdate())
+	<if test="userId != -1">
+      and user_id = #{userId}
+    </if>
+	group by month_date
+  </select>
+  <select id="roomCountStatic" resultMap="roomCountStatic">
+	 select meeting_room.`name`,COUNT(*) as value
+     from appoint,meeting_room
+     where state = 1 AND appoint_time >= date_add(last_day(date_sub(curdate(), interval 1 year)), interval 1 day) AND appoint_time &lt;= last_day(curdate()) and meeting_room.id = appoint.room_id 
+     <if test="userId != -1">
+       and user_id = #{userId}
+     </if>
+     group by room_id
+   </select>
+</mapper>

@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mrm.ysu.dao.MeetingRoomMapper">
+  <resultMap id="BaseResultMap" type="com.mrm.ysu.pojo.MeetingRoom">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="scale" jdbcType="INTEGER" property="scale" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="department_id" jdbcType="INTEGER" property="departmentId" />
+    <result column="capacity" jdbcType="INTEGER" property="capacity" />
+    <result column="multimedia" jdbcType="INTEGER" property="multimedia" />
+    <result column="device_state" jdbcType="INTEGER" property="deviceState" />
+    <result column="is_check" jdbcType="INTEGER" property="isCheck" />
+    <result column="ahead_time" jdbcType="INTEGER" property="aheadTime" />
+    <result column="is_del" jdbcType="INTEGER" property="isDel" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, scale, name, department_id, capacity, multimedia, device_state, is_check, ahead_time, 
+    is_del
+  </sql>
+  <select id="selectByExample" parameterType="com.mrm.ysu.pojo.MeetingRoomExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from meeting_room
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from meeting_room
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from meeting_room
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mrm.ysu.pojo.MeetingRoomExample">
+    delete from meeting_room
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mrm.ysu.pojo.MeetingRoom">
+    insert into meeting_room (id, scale, name, 
+      department_id, capacity, multimedia, 
+      device_state, is_check, ahead_time, 
+      is_del)
+    values (#{id,jdbcType=INTEGER}, #{scale,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{departmentId,jdbcType=INTEGER}, #{capacity,jdbcType=INTEGER}, #{multimedia,jdbcType=INTEGER}, 
+      #{deviceState,jdbcType=INTEGER}, #{isCheck,jdbcType=INTEGER}, #{aheadTime,jdbcType=INTEGER}, 
+      #{isDel,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mrm.ysu.pojo.MeetingRoom">
+    insert into meeting_room
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="scale != null">
+        scale,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="departmentId != null">
+        department_id,
+      </if>
+      <if test="capacity != null">
+        capacity,
+      </if>
+      <if test="multimedia != null">
+        multimedia,
+      </if>
+      <if test="deviceState != null">
+        device_state,
+      </if>
+      <if test="isCheck != null">
+        is_check,
+      </if>
+      <if test="aheadTime != null">
+        ahead_time,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="scale != null">
+        #{scale,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null">
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="capacity != null">
+        #{capacity,jdbcType=INTEGER},
+      </if>
+      <if test="multimedia != null">
+        #{multimedia,jdbcType=INTEGER},
+      </if>
+      <if test="deviceState != null">
+        #{deviceState,jdbcType=INTEGER},
+      </if>
+      <if test="isCheck != null">
+        #{isCheck,jdbcType=INTEGER},
+      </if>
+      <if test="aheadTime != null">
+        #{aheadTime,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mrm.ysu.pojo.MeetingRoomExample" resultType="java.lang.Long">
+    select count(*) from meeting_room
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update meeting_room
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.scale != null">
+        scale = #{record.scale,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.departmentId != null">
+        department_id = #{record.departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.capacity != null">
+        capacity = #{record.capacity,jdbcType=INTEGER},
+      </if>
+      <if test="record.multimedia != null">
+        multimedia = #{record.multimedia,jdbcType=INTEGER},
+      </if>
+      <if test="record.deviceState != null">
+        device_state = #{record.deviceState,jdbcType=INTEGER},
+      </if>
+      <if test="record.isCheck != null">
+        is_check = #{record.isCheck,jdbcType=INTEGER},
+      </if>
+      <if test="record.aheadTime != null">
+        ahead_time = #{record.aheadTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDel != null">
+        is_del = #{record.isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update meeting_room
+    set id = #{record.id,jdbcType=INTEGER},
+      scale = #{record.scale,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      department_id = #{record.departmentId,jdbcType=INTEGER},
+      capacity = #{record.capacity,jdbcType=INTEGER},
+      multimedia = #{record.multimedia,jdbcType=INTEGER},
+      device_state = #{record.deviceState,jdbcType=INTEGER},
+      is_check = #{record.isCheck,jdbcType=INTEGER},
+      ahead_time = #{record.aheadTime,jdbcType=INTEGER},
+      is_del = #{record.isDel,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mrm.ysu.pojo.MeetingRoom">
+    update meeting_room
+    <set>
+      <if test="scale != null">
+        scale = #{scale,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null">
+        department_id = #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="capacity != null">
+        capacity = #{capacity,jdbcType=INTEGER},
+      </if>
+      <if test="multimedia != null">
+        multimedia = #{multimedia,jdbcType=INTEGER},
+      </if>
+      <if test="deviceState != null">
+        device_state = #{deviceState,jdbcType=INTEGER},
+      </if>
+      <if test="isCheck != null">
+        is_check = #{isCheck,jdbcType=INTEGER},
+      </if>
+      <if test="aheadTime != null">
+        ahead_time = #{aheadTime,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mrm.ysu.pojo.MeetingRoom">
+    update meeting_room
+    set scale = #{scale,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      department_id = #{departmentId,jdbcType=INTEGER},
+      capacity = #{capacity,jdbcType=INTEGER},
+      multimedia = #{multimedia,jdbcType=INTEGER},
+      device_state = #{deviceState,jdbcType=INTEGER},
+      is_check = #{isCheck,jdbcType=INTEGER},
+      ahead_time = #{aheadTime,jdbcType=INTEGER},
+      is_del = #{isDel,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="query" parameterType="com.mrm.ysu.pojo.QueryRoom" resultMap="BaseResultMap">
+    SELECT * FROM meeting_room
+    <where>
+           <if test="departmentId!=null and departmentId!=''">
+                (department_id=#{departmentId} or department_id=0)
+                and scale  &lt;= #{userScale}
+                </if>
+                <if test="location != null and location!=''">
+                and name like #{location}
+                </if>
+                and is_del=1
+                <if test="appointTime!=null and appointTime!='' ">
+                 and datediff(#{appointTime}, NOW()) &lt;= ahead_time and datediff(#{appointTime}, NOW()) &gt;= 0
+                </if>                            
+                <if test="multimedia!=null and multimedia !=2">
+                  and multimedia = #{multimedia}
+                </if>
+		        <if test="check!=null and check !=2">
+		            and is_check = #{check}
+		        </if>
+		        <if test="peopleNum != null and peopleNum != ''">
+		            and capacity &gt;= #{peopleNum}
+		        </if> 
+		        <if test="appointTime!=null and appointTime!='' and start != '' and end!='' ">
+		           and id not in (SELECT room_id FROM appoint
+                       WHERE (!(appoint_start &gt;= #{end} or appoint_end &lt;=#{start}) and  appoint_time=#{appointTime}) 
+                       and state=1 )
+		        </if> 
+		        order by capacity
+     </where>
+  </select>
+    <select id="queryUsable" parameterType="com.mrm.ysu.pojo.QueryRoom" resultMap="BaseResultMap">
+    SELECT * FROM meeting_room
+    <where>
+           <if test="departmentId!=null and departmentId!=''">
+                (department_id=#{departmentId} or department_id=0)
+                and scale  &lt;= #{userScale}
+           </if>
+            <if test="location != null">
+                 and name like #{location}
+            </if>
+            and is_del=1
+            order by capacity
+     </where>
+  </select>
+  
+</mapper>

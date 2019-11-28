@@ -1,0 +1,14 @@
+com\mrm\ysu\service\appoint\AppointService.class
+com\mrm\ysu\service\room\MeetingRoomService.class
+com\mrm\ysu\service\message\MessageService.class
+com\mrm\ysu\service\room\MeetingRoomServiceImpl.class
+com\mrm\ysu\service\department\DepartmentServiceImpl.class
+com\mrm\ysu\service\single\SingleServiceImpl.class
+com\mrm\ysu\service\user\UserService.class
+com\mrm\ysu\service\area\AreaServiceImpl.class
+com\mrm\ysu\service\message\MessageServiceImpl.class
+com\mrm\ysu\service\single\SingleService.class
+com\mrm\ysu\service\appoint\AppointServiceImpl.class
+com\mrm\ysu\service\department\DepartmentService.class
+com\mrm\ysu\service\user\UserServiceImpl.class
+com\mrm\ysu\service\area\IareaService.class
